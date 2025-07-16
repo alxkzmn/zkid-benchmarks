@@ -1,0 +1,44 @@
+[package]
+name = "risc0-benchmark"
+version = "0.1.0"
+edition = "2021"
+
+[workspace]
+members = ["methods"]
+
+[workspace.dependencies]
+risc0-build = { version = "2.2" }
+
+[dependencies]
+risc0-benchmark-methods = { path = "methods" }
+risc0-zkvm = { version = "2.2", features = ["prove"] }
+
+clap = { version = "4.5", features = ["derive"] }
+csv = "1.1"
+ed25519-dalek = { version = "2.0.0-rc.3", default-features = false, features = [
+  "rand_core",
+] }
+enum-iterator = "2.0"
+human-repr = { version = "1.0", features = ["1024"] }
+k256 = { version = "0.13", features = ["serde"] }
+rand = "0.8"
+rand_core = "0.6"
+serde = { version = "1.0", features = ["derive"] }
+serde_with = "3.8"
+tabled = "0.15"
+tracing = { version = "0.1", default-features = false }
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+
+
+[features]
+cuda = ["risc0-zkvm/cuda"]
+default = []
+prove = ["risc0-zkvm/prove"]
+
+# Always optimize; building and running the guest takes much longer without optimization.
+[profile.dev]
+opt-level = 3
+
+[profile.release]
+debug = 1
+lto = true
