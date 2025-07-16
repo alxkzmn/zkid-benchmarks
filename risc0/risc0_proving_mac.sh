@@ -22,15 +22,14 @@ bytes_to_human() {
 
 # Function to record stats of a command
 time_fn() {
-  /usr/bin/time -v -o cargo_time.log "$@"
+  /usr/bin/time -l -o cargo_time.log "$@"
 }
 
-# # Run the SHA256 hash proving & record the stats
+# Run the SHA256 hash proving & record the stats
 time_fn cargo run --release -- big-sha2
 
 # Get the memory size needed for whole process
-max_rss_kb=$(grep -i "Maximum resident set size" cargo_time.log | awk '{print $6}')
-max_rss_bytes=$((max_rss_kb * 1024))
+max_rss_bytes=$(awk '/maximum resident set size/ {print $1}' cargo_time.log)
 
 echo "Proving memory usage: $(bytes_to_human $max_rss_bytes)"
 echo "NOTE: Table data is saved in 'metrics.csv' file. There, unit of duration is nanoseconds."
