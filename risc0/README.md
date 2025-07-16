@@ -14,9 +14,9 @@ The benchmark code is from RISC Zero benchmark code:
 cd risc0
 ```
 
-3. Run the script
+3. Run the script according to hardware
 
 ```console
-chmod +x ./risc0_proving.sh
-./risc0_proving.sh
+chmod +x ./risc0_proving_mac.sh
+./risc0_proving_mac.sh
 ```
