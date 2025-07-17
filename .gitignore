@@ -4,3 +4,17 @@
 **/.DS_Store
 **/*.perfetto-trace
 **/rustc-ice-*.txt
+*~
+*.swp
+*.swo
+.bazelrc.local
+.cache
+.devcontainer/
+.dockerignore
+.idea/
+.vim/
+bazel-*
+dist/
+Dockerfile
+rust-project.json
+tmp/
