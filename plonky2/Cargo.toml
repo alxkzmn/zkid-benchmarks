@@ -1,23 +1,23 @@
 [package]
 name = "plonky2_sha256"
 version = "0.1.0"
-edition = "2021"
+edition = "2024"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
 plonky2 = "1.0.2"
-anyhow = "1.0.40"
-itertools = "0.10.0"
-log = "0.4.14"
-sha2 = "0.10"
-env_logger = "0.10.0"
-rand = "0.8.4"
+anyhow = { workspace = true }
+itertools = { workspace = true }
+log = { workspace = true }
+sha2 = { workspace = true }
+env_logger = { workspace = true }
+rand = { workspace = true }
 plonky2_u32 = { git = "https://github.com/alxkzmn/plonky2-u32", rev = "167d8a6" }
-criterion = "0.5.1"
-tikv-jemalloc-ctl = "0.5.4"
-tikv-jemallocator = {version="0.5.4", features=["stats", "disable_initial_exec_tls"]}
-memory-stats = "1.2.0"
+criterion = { workspace = true }
+tikv-jemalloc-ctl = { workspace = true }
+tikv-jemallocator = { workspace = true }
+memory-stats = { workspace = true }
 
 [profile.release]
 opt-level = 3
