@@ -31,12 +31,8 @@ rand = { workspace = true }
 tracing-profile = "0.10.3"
 tracing = "0.1.38"
 criterion = { workspace = true }
-env_logger = { workspace = true }
-log = { workspace = true }
-sha2 = { workspace = true }
 tikv-jemalloc-ctl = { workspace = true }
 tikv-jemallocator = { workspace = true }
-memory-stats = { workspace = true }
 
 [[bench]]
 name = "sha256_bench"
