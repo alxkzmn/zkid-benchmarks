@@ -17,3 +17,6 @@ tikv-jemalloc-ctl = {version="0.6.0", features=["stats"]}
 tikv-jemallocator = {version="0.6.0", features=["stats"]}
 memory-stats = "1.2.0"
 
+[profile.bench]
+opt-level = 3
+

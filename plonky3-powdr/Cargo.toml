@@ -29,9 +29,6 @@ tikv-jemalloc-ctl = { workspace = true }
 tikv-jemallocator = { workspace = true }
 memory-stats = { workspace = true }
 
-[profile.bench]
-opt-level = 3
-
 [[bench]]
 name = "prove_verify"
 harness = false
