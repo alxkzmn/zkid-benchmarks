@@ -1,7 +1,7 @@
 [package]
 name = "binius-sha256"
 version = "0.1.0"
-edition = "2021"
+edition = "2024"
 
 # We're going to build a static library named mopro_bindings
 # This library name should not be changed

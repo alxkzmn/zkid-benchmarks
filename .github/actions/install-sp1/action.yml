@@ -1,0 +1,15 @@
+name: "Install SP1 toolchain"
+description: "Installs the SP1 toolchain"
+inputs:
+  token:
+    description: "GitHub token for SP1 authentication"
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - shell: bash
+      run: |
+        curl -L https://sp1up.succinct.xyz | bash
+        source ~/.bashrc
+        ~/.sp1/bin/sp1up -v v4.2.0 --token ${{ inputs.token }}
+        ~/.sp1/bin/cargo-prove prove --version

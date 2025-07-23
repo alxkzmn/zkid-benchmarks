@@ -1,7 +1,7 @@
 [package]
 version = "0.1.0"
 name = "sha-script"
-edition = "2021"
+edition = "2024"
 default-run = "sha"
 
 [[bin]]
@@ -12,17 +12,14 @@ path = "src/bin/main.rs"
 sp1-sdk = { version = "4.1.7", default-features = false }
 serde_json = { version = "1.0", default-features = false, features = ["alloc"] }
 serde = { version = "1.0.200", default-features = false, features = ["derive"] }
-clap = { version = "4.0", features = ["derive", "env"] }
-tracing = "0.1.40"
+clap = { workspace = true }
+tracing = { workspace = true }
 sha-lib = { path = "../lib" }
-criterion = "0.5.1"
+criterion = { workspace = true }
 bincode = "1.3.3"
 
 [build-dependencies]
 sp1-helper = "4.1.7"
-
-[profile.bench]
-opt-level = 3
 
 [[bench]]
 name = "prove_verify"

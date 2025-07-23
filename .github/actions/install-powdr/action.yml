@@ -1,0 +1,7 @@
+name: "Install Powdr"
+description: "Installs the Powdr toolchain"
+runs:
+  using: "composite"
+  steps:
+    - shell: bash
+      run: cargo install cargo-powdr --force

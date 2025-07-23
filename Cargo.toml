@@ -1,0 +1,29 @@
+[workspace]
+members = [
+    "binius",
+    "plonky2",
+    "plonky3-powdr",
+    "plonky3-sp1/lib",
+    "plonky3-sp1/script"
+]
+exclude = [
+    "plonky3-sp1/program",  # Should be excluded, compiled for the Succinct toolchain via sp1_helper in script/build.rs
+]
+workspace.resolver = "3"
+[workspace.dependencies]
+anyhow = "1.0.81"
+clap = { version = "4.5.20", features = ["derive", "env"] }
+criterion = "0.5.1"
+env_logger = "0.10.0"
+itertools = "0.13.0"
+log = "0.4.14"
+rand = "0.8.5"
+sha2 = "0.10"
+tikv-jemalloc-ctl = {version="0.6.0", features=["stats"]}
+tikv-jemallocator = {version="0.6.0", features=["stats"]}
+tracing = "0.1.40"
+memory-stats = "1.2.0"
+
+[profile.bench]
+opt-level = 3
+

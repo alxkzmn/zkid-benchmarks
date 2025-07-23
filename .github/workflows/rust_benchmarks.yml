@@ -1,0 +1,98 @@
+name: Benchmarks
+
+on:
+  schedule:
+    # Every Monday at 06:00 UTC
+    - cron: "0 6 * * 1"
+  workflow_dispatch:
+
+env:
+  CARGO_TERM_COLOR: always
+  RUST_BACKTRACE: 1
+
+# ────────────────── 1. Warm‑up build ──────────────────
+jobs:
+  prepare-cache:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Cache everything
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/bin
+            ~/.cargo/registry/index
+            ~/.cargo/registry/cache
+            ~/.cargo/git/db
+            ~/.rustup
+            target
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-cargo-
+
+      - name: Install Rust toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: nightly-2025-02-20-aarch64-apple-darwin
+          override: true
+          profile: default
+          default: true
+          components: llvm-tools, rustc-dev
+
+      - name: Install SP1
+        uses: ./.github/actions/install-sp1
+        with:
+          token: ${{ secrets.GH_PAT }}
+
+      - name: Install Powdr
+        uses: ./.github/actions/install-powdr
+
+      - name: Build full workspace (release)
+        run: cargo build --release --workspace
+
+  # ────────────────── 2. Rust workspace benchmarks ──────────────────
+  bench-workspace:
+    needs: prepare-cache
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Restore Cargo cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-cargo-
+
+      - name: Install Rust toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: nightly-2025-02-20-aarch64-apple-darwin
+          override: true
+          profile: default
+          default: true
+          components: llvm-tools, rustc-dev
+
+      - name: Install SP1
+        uses: ./.github/actions/install-sp1
+        with:
+          token: ${{ secrets.GH_PAT }}
+
+      - name: Install Powdr
+        uses: ./.github/actions/install-powdr
+
+      - name: Run workspace benchmarks
+        run: cargo bench
+
+      - name: Upload Criterion reports
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: criterion-reports
+          path: target/criterion
+          retention-days: 30

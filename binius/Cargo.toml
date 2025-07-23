@@ -6,7 +6,7 @@ edition = "2024"
 [lib]
 
 [dependencies]
-anyhow = "1.0.81"
+anyhow = { workspace = true }
 alloy-primitives = "0.8.14"
 array-util = "1.0.2"
 binius_circuits = { git = "https://github.com/alxkzmn/binius", default-features = false }
@@ -25,14 +25,14 @@ bytemuck = { version = "1.18.0", features = [
     "must_cast",
 ] }
 bytesize = "1.3.0"
-clap = { version = "4.5.20", features = ["derive"] }
-itertools = "0.13.0"
-rand = { version = "0.8.5", default-features = false, features = ["std_rng"] }
+clap = { workspace = true }
+itertools = { workspace = true }
+rand = { workspace = true }
 tracing-profile = "0.10.3"
-tracing = "0.1.38"
-criterion = { version = "0.5.1" }
-jemalloc-ctl = "0.5.4"
-jemallocator = "0.5.4"
+tracing = { workspace = true }
+criterion = { workspace = true }
+tikv-jemalloc-ctl = { workspace = true }
+tikv-jemallocator = { workspace = true }
 
 [[bench]]
 name = "sha256_bench"
