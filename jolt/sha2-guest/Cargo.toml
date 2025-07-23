@@ -1,0 +1,11 @@
+[package]
+name = "sha2-guest"
+version = "0.1.0"
+edition = "2021"
+
+[features]
+guest = []
+
+[dependencies]
+jolt = { package = "jolt-sdk", git = "https://github.com/a16z/jolt", rev = "edce59e951725973f425ff4d04f1ac19de0ece8e", features = ["guest-std"]}
+guests = { path = "../../guests", features = ["with-sha2"] }
