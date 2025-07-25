@@ -24,10 +24,7 @@ log = { workspace = true }
 rand = { workspace = true }
 sha2 = { workspace = true }
 criterion = { workspace = true }
-tikv-jemalloc-ctl = { workspace = true }
-[target.'cfg(not(target_env = "msvc"))'.dependencies]
-tikv-jemallocator = { workspace = true }
-memory-stats = { workspace = true }
+utils = { path = "../utils" }
 
 [[bench]]
 name = "prove_verify"

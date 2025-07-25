@@ -1,6 +1,6 @@
-use criterion::{criterion_group, criterion_main, BatchSize, Criterion};
+use criterion::{BatchSize, Criterion, criterion_group, criterion_main};
 
-use sp1_sdk::{include_elf, EnvProver, ProverClient, SP1ProvingKey, SP1Stdin, SP1VerifyingKey};
+use sp1_sdk::{EnvProver, ProverClient, SP1ProvingKey, SP1Stdin, SP1VerifyingKey, include_elf};
 
 /// The ELF (executable and linkable format) file for the Succinct RISC-V zkVM.
 pub const SHA_ELF: &[u8] = include_elf!("sha-program");

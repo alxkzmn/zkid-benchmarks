@@ -15,9 +15,7 @@ env_logger = { workspace = true }
 rand = { workspace = true }
 plonky2_u32 = { git = "https://github.com/alxkzmn/plonky2-u32", rev = "167d8a6" }
 criterion = { workspace = true }
-tikv-jemalloc-ctl = { workspace = true }
-tikv-jemallocator = { workspace = true }
-memory-stats = { workspace = true }
+utils = { path = "../utils" }
 
 [profile.release]
 opt-level = 3

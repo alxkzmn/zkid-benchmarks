@@ -5,7 +5,7 @@ use std::{
     path::{Path, PathBuf},
 };
 
-use powdr::{riscv, GoldilocksField, Pipeline, Session};
+use powdr::{GoldilocksField, Pipeline, Session, riscv};
 
 fn pil_file_path(asm_name: &Path) -> PathBuf {
     let file_stem = asm_name.file_stem().unwrap().to_str().unwrap();

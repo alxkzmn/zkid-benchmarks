@@ -1,4 +1,4 @@
-use criterion::{criterion_group, criterion_main, BatchSize, Criterion};
+use criterion::{BatchSize, Criterion, criterion_group, criterion_main};
 
 use plonky2_sha256::bench::{prove, sha256_no_lookup_prepare, verify};
 

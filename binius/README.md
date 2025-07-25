@@ -11,5 +11,6 @@ cargo bench
 # Measure SHA256 RAM footprint and preprocessing size
 
 ```bash
-cargo run --bin measure --release
+cargo run --release --bin measure_lookup
+cargo run --release --bin measure_no_lookup
 ```

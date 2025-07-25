@@ -31,14 +31,16 @@ rand = { workspace = true }
 tracing-profile = "0.10.3"
 tracing = { workspace = true }
 criterion = { workspace = true }
-tikv-jemalloc-ctl = { workspace = true }
-tikv-jemallocator = { workspace = true }
+utils = { path="../utils" }
 
 [[bench]]
 name = "sha256_bench"
 harness = false
 
 [[bin]]
-name = "measure"
-path = "src/bin/measure.rs"
+name = "measure_lookup"
+path = "src/bin/measure_lookup.rs"
 
+[[bin]]
+name = "measure_no_lookup"
+path = "src/bin/measure_no_lookup.rs"

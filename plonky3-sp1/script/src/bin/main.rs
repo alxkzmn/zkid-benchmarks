@@ -11,7 +11,7 @@
 //! ```
 
 use clap::Parser;
-use sp1_sdk::{include_elf, ProverClient, SP1Stdin};
+use sp1_sdk::{ProverClient, SP1Stdin, include_elf};
 
 /// The ELF (executable and linkable format) file for the Succinct RISC-V zkVM.
 pub const SHA_ELF: &[u8] = include_elf!("sha-program");
@@ -53,7 +53,9 @@ fn main() {
         && !args.prove
         && !args.verify
     {
-        eprintln!("Error: You must specify either --execute, --setup, --setup_no_write, --prove, --prove_no_write or --verify");
+        eprintln!(
+            "Error: You must specify either --execute, --setup, --setup_no_write, --prove, --prove_no_write or --verify"
+        );
         std::process::exit(1);
     }
 

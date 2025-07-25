@@ -26,18 +26,11 @@ cargo run --release -- --setup
 cargo run --release -- --prove
 ```
 
-3. Use the monitor script to measure RAM usage:
+3. Measure the RAM usage:
 
 ```
 cd script
-sh monitor.sh setup-no-write
-```
-
-and
-
-```
-cd script
-sh monitor.sh prove-no-write
+cargo run --bin measure --release 
 ```
 
 ## Benchmarking
