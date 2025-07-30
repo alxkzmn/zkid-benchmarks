@@ -1,0 +1,6 @@
+[package]
+name = "sha256_bench_2e11"
+type = "bin"
+
+[dependencies]
+noir_native_sha256 = { path = "../noir-native-sha256" }

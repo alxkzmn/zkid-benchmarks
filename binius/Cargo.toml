@@ -31,7 +31,7 @@ rand = { workspace = true }
 tracing-profile = "0.10.3"
 tracing = { workspace = true }
 criterion = { workspace = true }
-utils = { path="../utils" }
+utils = { workspace = true }
 
 [[bench]]
 name = "sha256_bench"

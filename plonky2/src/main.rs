@@ -16,7 +16,7 @@ pub fn prove_sha256(msg: &[u8]) -> Result<()> {
 
     let msg_bits = array_to_bits(msg);
     let len = msg.len() * 8;
-    println!("block count: {}", (len + 65 + 511) / 512);
+    println!("block count: {}", (len + 65).div_ceil(512));
     const D: usize = 2;
     type C = PoseidonGoldilocksConfig;
     type F = <C as GenericConfig<D>>::F;

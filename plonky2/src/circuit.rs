@@ -84,10 +84,7 @@ fn rotate32(y: usize) -> Vec<usize> {
 // x>>y
 // Assume: 0 at index 32
 fn shift32(y: usize) -> Vec<usize> {
-    let mut res = Vec::new();
-    for _ in 32 - y..32 {
-        res.push(32);
-    }
+    let mut res = vec![32; y];
     for i in 0..32 - y {
         res.push(i);
     }
@@ -280,7 +277,7 @@ pub fn make_circuits<F: RichField + Extendable<D>, const D: usize>(
 ) -> Sha256Targets {
     let mut message = Vec::new();
     let mut digest = Vec::new();
-    let block_count = (msg_len_in_bits + 65 + 511) / 512;
+    let block_count = (msg_len_in_bits + 65).div_ceil(512);
     let padded_msg_len = 512 * block_count;
     let p = padded_msg_len - 64 - msg_len_in_bits;
     assert!(p > 1);
@@ -423,7 +420,7 @@ mod tests {
 
     #[test]
     fn test_sha256() -> Result<()> {
-        let mut msg = vec![0; 128 as usize];
+        let mut msg = vec![0; 128_usize];
         for i in 0..127 {
             msg[i] = i as u8;
         }
@@ -466,7 +463,7 @@ mod tests {
     #[test]
     #[should_panic]
     fn test_sha256_failure() {
-        let mut msg = vec![0; 128 as usize];
+        let mut msg = vec![0; 128_usize];
         for i in 0..127 {
             msg[i] = i as u8;
         }

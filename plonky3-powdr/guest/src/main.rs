@@ -1,3 +1,5 @@
+#![allow(unused_imports)]
+
 use powdr_riscv_runtime;
 use sha2::{Digest, Sha256};
 

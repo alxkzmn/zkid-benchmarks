@@ -1,7 +1,7 @@
 [package]
 name = "jolt-benchmarks"
 version = "0.1.0"
-edition = "2021"
+edition = "2024"
 
 [workspace]
 members = ["sha2-guest"]
@@ -12,11 +12,12 @@ codegen-units = 1
 lto = "fat"
 
 [dependencies]
-jolt = { package = "jolt-sdk", git = "https://github.com/a16z/jolt", rev = "edce59e951725973f425ff4d04f1ac19de0ece8e", features = ["host"] }
-hex = "0.4.3"
-
+jolt = { package = "jolt-sdk", git = "https://github.com/a16z/jolt", rev = "edce59e951725973f425ff4d04f1ac19de0ece8e", features = [
+    "host",
+] }
+hex = { workspace = true }
 sha2-guest = { path = "./sha2-guest" }
-utils = { path = "../utils" }
+utils = { workspace = true }
 
 [patch.crates-io]
 ark-ff = { git = "https://github.com/a16z/arkworks-algebra", branch = "optimize/field-from-u64" }

@@ -21,16 +21,16 @@ cargo build --release
 ```
 cd script
 # Generate and write pk.bin and vk.bin:
-cargo run --release -- --setup
+cargo run --release --bin plonky3-sp1-sha -- --setup
 # Generate and write proof:
-cargo run --release -- --prove
+cargo run --release --bin plonky3-sp1-sha -- --prove
 ```
 
 3. Measure the RAM usage:
 
 ```
 cd script
-cargo run --bin measure --release 
+cargo run --bin plonky3-sp1-measure --release
 ```
 
 ## Benchmarking

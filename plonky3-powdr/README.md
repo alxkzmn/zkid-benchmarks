@@ -7,7 +7,7 @@ This benchmark code is based on https://github.com/babybear-labs/benchmark/tree/
 This will run the host and generate ZK proofs.
 
 ```bash
-cargo run -r --bin sha
+cargo run -r --bin plonky3-powdr-sha
 ```
 
 ## Benchmarking
@@ -19,5 +19,5 @@ cargo bench
 Measure RAM footprint:
 
 ```bash
-cargo run -r --bin measure
+cargo run -r --bin plonky3-powdr-measure
 ```

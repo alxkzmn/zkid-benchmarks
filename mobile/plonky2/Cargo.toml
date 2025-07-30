@@ -1,7 +1,7 @@
 [package]
 name = "plonky2-mobile"
 version = "0.1.0"
-edition = "2021"
+edition = "2024"
 
 [lib]
 name = "mopro_bindings"
@@ -37,4 +37,3 @@ uniffi = { version = "0.28.0", features = ["bindgen-tests"] }
 # remove after uniffi is upgraded (see https://github.com/mozilla/uniffi-rs/issues/2346)
 [lints.clippy]
 empty-line-after-doc-comments = "allow"
-

@@ -27,7 +27,7 @@ pub fn ecdsa_input() -> EcdsaVerifyInput {
     let message = hex::decode(MESSAGE).expect("Failed to decode hex of 'message'");
 
     let encoded_point = EncodedPoint::<Secp256k1>::from_bytes(
-        &hex::decode(KEY).expect("Failed to decode hex of 'verifying_key'"),
+        hex::decode(KEY).expect("Failed to decode hex of 'verifying_key'"),
     )
     .expect("Invalid encoded verifying_key bytes");
 

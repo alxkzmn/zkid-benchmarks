@@ -1,7 +1,7 @@
 [package]
 name = "guests"
 version = "0.1.0"
-edition = "2021"
+edition = "2024"
 
 [dependencies]
 sha2 = { version = "0.10.8", default-features = false, optional = true }
@@ -12,7 +12,7 @@ k256 = { version = "=0.13.4", features = [
   "ecdsa",
 ], default-features = false, optional = true }
 getrandom = { version = "0.2", features = ["custom"], optional = true }
-serde = { version = "1.0", features = ["derive"], optional = true }
+serde = { workspace = true, optional = true }
 
 [features]
 default = []

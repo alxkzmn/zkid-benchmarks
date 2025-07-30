@@ -11,7 +11,7 @@ fn sha256_prepare(client: &EnvProver) -> (SP1ProvingKey, SP1VerifyingKey) {
 
 fn sha256_bench(c: &mut Criterion) {
     let client = ProverClient::from_env();
-    let mut stdin = SP1Stdin::new();
+    let stdin = SP1Stdin::new();
     // // Setup the program for proving.
     // let (pk, vk) = client.setup(SHA_ELF);
 
@@ -33,7 +33,7 @@ fn sha256_bench(c: &mut Criterion) {
     group.bench_function("sha256_bench_prove", |bench| {
         bench.iter_batched(
             || sha256_prepare(&client),
-            |(pk, pw)| {
+            |(pk, _pw)| {
                 client
                     .prove(&pk, &stdin)
                     .run()

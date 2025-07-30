@@ -15,18 +15,12 @@ env_logger = { workspace = true }
 rand = { workspace = true }
 plonky2_u32 = { git = "https://github.com/alxkzmn/plonky2-u32", rev = "167d8a6" }
 criterion = { workspace = true }
-utils = { path = "../utils" }
-
-[profile.release]
-opt-level = 3
-
-[profile.test]
-opt-level = 1
+utils = { workspace = true }
 
 [[bench]]
 name = "prove_verify"
 harness = false
 
 [[bin]]
-name = "measure"
+name = "plonky2-measure"
 path = "src/bin/measure.rs"

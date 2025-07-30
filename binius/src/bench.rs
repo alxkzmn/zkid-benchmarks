@@ -26,12 +26,12 @@ pub struct Args {
     pub log_inv_rate: u32,
 }
 
-pub fn sha256_no_lookup_prepare<'a>(
-    allocator: &'a bumpalo::Bump,
+pub fn sha256_no_lookup_prepare(
+    allocator: &bumpalo::Bump,
 ) -> (
     ConstraintSystem<BinaryField128b>,
     Args,
-    MultilinearExtensionIndex<'a, PackedType<OptimalUnderlier, BinaryField128b>>,
+    MultilinearExtensionIndex<'_, PackedType<OptimalUnderlier, BinaryField128b>>,
     CpuBackend,
 ) {
     adjust_thread_pool()
@@ -47,7 +47,7 @@ pub fn sha256_no_lookup_prepare<'a>(
 
     let log_n_compressions = log2_ceil_usize(args.n_compressions as usize);
 
-    let mut builder = ConstraintSystemBuilder::new_with_witness(&allocator);
+    let mut builder = ConstraintSystemBuilder::new_with_witness(allocator);
 
     let trace_gen_scope = tracing::info_span!("generating trace").entered();
     let input: [OracleId; 16] = array_util::try_from_fn(|i| {
@@ -74,12 +74,12 @@ pub fn sha256_no_lookup_prepare<'a>(
     (constraint_system, args, witness, backend)
 }
 
-pub fn sha256_with_lookup_prepare<'a>(
-    allocator: &'a bumpalo::Bump,
+pub fn sha256_with_lookup_prepare(
+    allocator: &bumpalo::Bump,
 ) -> (
     ConstraintSystem<BinaryField128b>,
     Args,
-    MultilinearExtensionIndex<'a, PackedType<OptimalUnderlier, BinaryField128b>>,
+    MultilinearExtensionIndex<'_, PackedType<OptimalUnderlier, BinaryField128b>>,
     CpuBackend,
 ) {
     adjust_thread_pool()
@@ -98,7 +98,7 @@ pub fn sha256_with_lookup_prepare<'a>(
 
     let log_n_compressions = log2_ceil_usize(args.n_compressions as usize);
 
-    let mut builder = ConstraintSystemBuilder::new_with_witness(&allocator);
+    let mut builder = ConstraintSystemBuilder::new_with_witness(allocator);
 
     let trace_gen_scope = tracing::info_span!("generating witness").entered();
     let input: [OracleId; 16] = array_util::try_from_fn(|i| {
@@ -125,10 +125,10 @@ pub fn sha256_with_lookup_prepare<'a>(
     (constraint_system, args, witness, backend)
 }
 
-pub fn prove<'a>(
+pub fn prove(
     constraint_system: ConstraintSystem<binius_field::BinaryField128b>,
     args: Args,
-    witness: MultilinearExtensionIndex<'a, PackedType<OptimalUnderlier, BinaryField128b>>,
+    witness: MultilinearExtensionIndex<'_, PackedType<OptimalUnderlier, BinaryField128b>>,
     backend: CpuBackend,
 ) -> (ConstraintSystem<BinaryField128b>, Args, Proof) {
     const SECURITY_BITS: usize = 100;

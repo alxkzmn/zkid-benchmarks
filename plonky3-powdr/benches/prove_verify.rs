@@ -7,7 +7,7 @@ fn sha256_bench(c: &mut Criterion) {
 
     group.bench_function("sha256_bench_prove", |bench| {
         bench.iter_batched(
-            || prepare_pipeline(),
+            prepare_pipeline,
             |mut pipeline| {
                 prove(&mut pipeline);
             },

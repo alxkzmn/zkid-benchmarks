@@ -43,7 +43,7 @@ pub fn sha256_no_lookup_prepare() -> (CircuitData<F, C, D>, PartialWitness<F>) {
 
     let msg_bits = array_to_bits(&msg);
     let len = msg.len() * 8;
-    println!("block count: {}", (len + 65 + 511) / 512);
+    println!("block count: {}", (len + 65).div_ceil(512));
     const D: usize = 2;
     type C = PoseidonGoldilocksConfig;
     type F = <C as GenericConfig<D>>::F;

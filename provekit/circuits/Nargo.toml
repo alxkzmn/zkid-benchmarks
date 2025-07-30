@@ -1,0 +1,9 @@
+[workspace]
+members = [
+    "hash/sha256-provekit/noir-native-sha256",
+    "hash/sha256-provekit/sha256-bench-2e8",
+    "hash/sha256-provekit/sha256-bench-2e9",
+    "hash/sha256-provekit/sha256-bench-2e10",
+    "hash/sha256-provekit/sha256-bench-2e11",
+    "hash/sha256-provekit/sha256-bench-2e12",
+]

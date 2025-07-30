@@ -8,7 +8,7 @@ const D: usize = 2;
 type C = PoseidonGoldilocksConfig;
 
 fn main() {
-    let ((data, pw), peak_memory) = measure_peak_memory(|| sha256_no_lookup_prepare());
+    let ((data, pw), peak_memory) = measure_peak_memory(sha256_no_lookup_prepare);
 
     println!(
         "Preprocessing peak memory: {} GB",

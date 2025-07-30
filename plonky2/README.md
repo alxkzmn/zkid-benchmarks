@@ -14,5 +14,5 @@ cargo bench
 ## Measuring disk space and RAM requirements
 
 ```
-cargo run --bin measure --release
+cargo run --bin plonky2-measure --release
 ```

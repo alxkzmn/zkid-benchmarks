@@ -8,7 +8,7 @@ fn sha256_no_lookup(c: &mut Criterion) {
 
     group.bench_function("sha256_no_lookup_prove", |bench| {
         bench.iter_batched(
-            || sha256_no_lookup_prepare(),
+            sha256_no_lookup_prepare,
             |(data, pw)| {
                 prove(&data.prover_data(), pw);
             },

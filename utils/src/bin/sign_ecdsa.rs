@@ -1,4 +1,3 @@
-use hex;
 use k256::{
     ecdsa::{signature::Signer, Signature, SigningKey},
     elliptic_curve::rand_core::OsRng,

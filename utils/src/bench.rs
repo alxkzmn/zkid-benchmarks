@@ -118,7 +118,7 @@ pub fn write_csv(out_path: &str, results: &[Metrics]) {
     let mut all_metrics = Vec::new();
 
     for metric in results {
-        out.serialize(&metric).expect("Could not serialize");
+        out.serialize(metric).expect("Could not serialize");
         out.flush().expect("Could not flush");
         all_metrics.push(metric);
     }
