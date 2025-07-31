@@ -1,3 +1,3 @@
 [toolchain]
-channel = "nightly-2025-02-20"
+channel = "nightly-2025-04-05" # required by std::vec::Vec::<T, A>::len in ProveKit
 components = ["llvm-tools", "rustc-dev"]

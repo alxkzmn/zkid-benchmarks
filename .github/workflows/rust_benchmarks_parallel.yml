@@ -1,0 +1,203 @@
+name: Benchmarks (parallel)
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+on:
+  push:
+    branches:
+      - "CSP-Q3-2025"
+  pull_request:
+    branches:
+      - "CSP-Q3-2025"
+  workflow_dispatch:
+    inputs:
+      run_all:
+        description: "Run benches for all benchmark crates"
+        required: false
+        default: false
+        type: boolean
+
+env:
+  CARGO_TERM_COLOR: always
+  RUST_BACKTRACE: 1
+
+jobs:
+  prepare-cache:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Cache everything
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/bin
+            ~/.cargo/registry/index
+            ~/.cargo/registry/cache
+            ~/.cargo/git/db
+            ~/.rustup
+            target
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-cargo-
+
+      - name: Install Rust toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: nightly-2025-04-05-aarch64-apple-darwin
+          override: true
+          profile: default
+          default: true
+          components: llvm-tools, rustc-dev
+
+      - name: Install SP1
+        uses: ./.github/actions/install-sp1
+        with:
+          token: ${{ secrets.GH_PAT }}
+
+      - name: Install Powdr
+        uses: ./.github/actions/install-powdr
+
+      - name: Install nightly-2024-08-01 with rust-src for Powdr
+        run: rustup toolchain install nightly-2024-08-01 --component rust-src
+
+      - name: Build full workspace (release)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }} # for ACIR (required by protoc-prebuilt)
+        run: cargo build --release --workspace
+
+  detect-crates:
+    needs: prepare-cache
+    runs-on: macos-latest
+    outputs:
+      crates: ${{ steps.set.outputs.crates }}
+    steps:
+      - name: Check out full history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Determine base‑remote and fetch it
+        id: base
+        run: |
+          REMOTE=origin
+          if [[ "${GITHUB_REPOSITORY}" != "privacy-scaling-explorations/csp-benchmarks" ]]; then
+            git remote add upstream https://github.com/privacy-scaling-explorations/csp-benchmarks.git
+            REMOTE=upstream
+          fi
+
+          BASE_BRANCH="CSP-Q3-2025"
+          git fetch --prune --no-tags --depth=1 "$REMOTE" "$BASE_BRANCH"
+
+          # expose for later steps
+          echo "BASE_REF=${REMOTE}/${BASE_BRANCH}" >> "$GITHUB_OUTPUT"
+
+      - name: Detect changed benchmark crates
+        id: set
+        run: |
+          BASE_REF="${{ steps.base.outputs.BASE_REF }}"
+
+          RUN_ALL="${{ github.event.inputs.run_all }}"
+
+          EXCLUDE_REGEX='^(utils|mobile)(/|$)'
+
+          # ─── 1. discover Cargo.toml files ────────────────────────────────
+          dirs=$(find . -mindepth 2 -maxdepth 4 -type f -name Cargo.toml \
+                  ! -path "./Cargo.toml" \
+                | sed -e 's|^\./||' -e 's|/Cargo.toml$||' \
+                | grep -vE "$EXCLUDE_REGEX" \
+                | sort -u)
+
+          # ─── 2. select top‑level dirs ───────────────────────────────────
+          selected=()      # declare early to please `set -u`
+          while IFS= read -r d; do
+            skip=false
+            for p in "${selected[@]-}"; do
+              [[ "$d/" == "$p/"* ]] && skip=true && break
+            done
+            $skip || selected+=("$d")
+          done < <(printf '%s\n' "$dirs" | awk '{print length,$0}' | sort -n | cut -d' ' -f2-)
+
+          # ─── 3. filter by diff & [[bench]] ──────────────────────────────
+          changed=()       # declare early
+          for d in "${selected[@]}"; do
+            # When RUN_ALL=true we ignore the diff check, otherwise we require a diff.
+            if [[ "$RUN_ALL" != "true" ]]; then
+              git diff --name-only "$BASE_REF"..HEAD 2>/dev/null | grep -q "^${d}/" || continue
+            fi
+
+            # Always require the crate to have a [[bench]] section.
+            if grep -q '^\[\[bench\]\]' "$d/Cargo.toml"; then
+              changed+=("$d")
+            fi
+          done
+
+          # ─── 4. output JSON array ───────────────────────────────────────
+          json=$(printf '%s\n' "${changed[@]}" |
+            jq -R -s -c 'split("\n") | map(select(length>0))')
+
+          echo "Detected changed crates: '$json'"
+          echo "crates=$json" >> "$GITHUB_OUTPUT"
+
+  bench:
+    if: ${{ needs.detect-crates.outputs.crates != '' && needs.detect-crates.outputs.crates != '[]' }}
+    needs: [prepare-cache, detect-crates]
+    runs-on: macos-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        crate: ${{ fromJson(needs.detect-crates.outputs.crates) }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth:
+
+      - name: Restore Cargo cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-cargo-
+
+      - name: Install Rust toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: nightly-2025-04-05-aarch64-apple-darwin
+          override: true
+          profile: default
+          default: true
+          components: llvm-tools, rustc-dev
+
+      - name: Install SP1
+        if: ${{ contains(matrix.crate, 'sp1') }}
+        uses: ./.github/actions/install-sp1
+        with:
+          token: ${{ secrets.GH_PAT }}
+
+      - name: Install Powdr
+        if: ${{ contains(matrix.crate, 'powdr') }}
+        uses: ./.github/actions/install-powdr
+
+      - name: Install nightly-2024-08-01 with rust-src for Powdr
+        if: ${{ contains(matrix.crate, 'powdr') }}
+        run: rustup toolchain install nightly-2024-08-01 --component rust-src
+
+      - name: Run benches in ${{ matrix.crate }}
+        run: |
+          cd ${{ matrix.crate }}
+          cargo bench
+
+      - name: Upload reports for ${{ matrix.crate }}
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: "criterion-${{ matrix.crate }}"
+          path: ${{ matrix.crate }}/target/criterion
+          retention-days: 30

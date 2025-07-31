@@ -1,9 +1,6 @@
-name: Benchmarks
+name: Benchmarks (serial)
 
 on:
-  schedule:
-    # Every Monday at 06:00 UTC
-    - cron: "0 6 * * 1"
   workflow_dispatch:
 
 env:
@@ -34,7 +31,7 @@ jobs:
       - name: Install Rust toolchain
         uses: actions-rs/toolchain@v1
         with:
-          toolchain: nightly-2025-02-20-aarch64-apple-darwin
+          toolchain: nightly-2025-04-05-aarch64-apple-darwin
           override: true
           profile: default
           default: true
@@ -48,7 +45,12 @@ jobs:
       - name: Install Powdr
         uses: ./.github/actions/install-powdr
 
+      - name: Install nightly-2024-08-01 with rust-src for Powdr
+        run: rustup toolchain install nightly-2024-08-01 --component rust-src
+
       - name: Build full workspace (release)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }} # for ACIR (required by protoc-prebuilt)
         run: cargo build --release --workspace
 
   # ────────────────── 2. Rust workspace benchmarks ──────────────────
@@ -72,7 +74,7 @@ jobs:
       - name: Install Rust toolchain
         uses: actions-rs/toolchain@v1
         with:
-          toolchain: nightly-2025-02-20-aarch64-apple-darwin
+          toolchain: nightly-2025-04-05-aarch64-apple-darwin
           override: true
           profile: default
           default: true
@@ -85,6 +87,9 @@ jobs:
 
       - name: Install Powdr
         uses: ./.github/actions/install-powdr
+
+      - name: Install nightly-2024-08-01 with rust-src for Powdr
+        run: rustup toolchain install nightly-2024-08-01 --component rust-src
 
       - name: Run workspace benchmarks
         run: cargo bench
