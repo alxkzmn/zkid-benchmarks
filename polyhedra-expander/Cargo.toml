@@ -4,10 +4,34 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
-expander_compiler = { git = "https://github.com/PolyhedraZK/ExpanderCompilerCollection" }
-gf2 = { git = "https://github.com/PolyhedraZK/Expander", branch = "main" }
-arith = { git = "https://github.com/PolyhedraZK/Expander", branch = "main" }
-circuit-std-rs = { git = "https://github.com/PolyhedraZK/ExpanderCompilerCollection" }
-serdes = { git = "https://github.com/PolyhedraZK/Expander", branch = "main"}
+bin = { git = "https://github.com/alxkzmn/Expander", branch = "main" }
+circuit = { git = "https://github.com/alxkzmn/Expander", branch = "main" }
+circuit-std-rs = { git = "https://github.com/alxkzmn/ExpanderCompilerCollection" }
+expander_compiler = { git = "https://github.com/alxkzmn/ExpanderCompilerCollection" }
+gkr = { git = "https://github.com/alxkzmn/Expander", branch = "main" }
+gkr_engine = { git = "https://github.com/alxkzmn/Expander", branch = "main" }
+gkr_hashers = { git = "https://github.com/alxkzmn/Expander", branch = "main" }
+mersenne31 = { git = "https://github.com/alxkzmn/Expander", branch = "main" }
+mpi = { git = "https://github.com/rsmpi/rsmpi", rev = "61796831954b679cbe267c1b704ddbcb7fef3715" }
+poly_commit = { git = "https://github.com/alxkzmn/Expander", branch = "main" }
 rand = "0.9.1"
+serdes = { git = "https://github.com/alxkzmn/Expander", branch = "main"}
 sha2 = "0.10.8"
+transcript = { git = "https://github.com/alxkzmn/Expander", branch = "main" }
+
+[dev-dependencies]
+criterion = "0.5.1"
+
+[[bench]]
+name = "prove_verify"
+harness = false
+
+[[bin]]
+name = "measure"
+path = "src/bin/measure.rs"
+
+[profile.release]
+opt-level = 3
+
+[profile.bench]
+opt-level = 3
